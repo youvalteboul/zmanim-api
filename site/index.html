@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zmanim API</title>
+<meta name="description" content="Les horaires juifs en JSON, réglables avis par avis : zmanim (règles CalJ, Rav Ovadia, hebcal ou vos propres avis), calendrier hébraïque, fêtes, paracha, tefila et offices. Node, navigateur ou HTTP, sans dépendance.">
+<link rel="icon" href="icone.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Frank+Ruhl+Libre:wght@500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="style.css">
+<script src="commun.js"></script>
+</head>
+<body>
+<header class="entete">
+  <div class="conteneur">
+    <a class="marque" href="./"><img src="icone.svg" alt="" width="28" height="28">Zmanim API</a>
+    <nav>
+      <a href="#essayer">Essayer</a>
+      <a class="optionnel" href="#avis">Avis</a>
+      <a href="docs.html">Documentation</a>
+      <a class="optionnel" href="reference.html">Référence</a>
+      <button class="bascule-theme" type="button" aria-label="Changer de thème">☾</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="accroche">
+    <div class="conteneur">
+      <div>
+        <span class="surtitre">בס״ד · זמנים</span>
+        <h1>Les horaires juifs, réglés <em>comme le demande votre rabbin</em>.</h1>
+        <p class="intro">Une fonction, un objet JSON : zmanim, date hébraïque, fêtes, paracha, allumage, jeûnes, tefila du jour et offices. Choisissez un minhag, puis changez chaque avis un par un, jusqu'au degré près.</p>
+        <div class="actions">
+          <a class="bouton principal" href="#essayer">Essayer en direct</a>
+          <a class="bouton secondaire" href="docs.html">Lire la documentation</a>
+        </div>
+        <p class="installe">GET /horaires?lieu=Paris&amp;minhag=ovadia&amp;tzeit=18f</p>
+      </div>
+      <div class="carte carte-jour" id="jour" aria-live="polite">
+        <div class="tete"><span class="lieu" id="jour-lieu">Paris</span><span class="heb" id="jour-heb"></span></div>
+        <div class="date" id="jour-date"></div>
+        <svg class="arc" id="arc" viewBox="0 0 520 214" role="img" aria-label="Course du soleil et zmanim du jour"></svg>
+        <div class="grille-zmanim" id="jour-zmanim"></div>
+        <div class="pied"><span id="jour-paracha"></span><span>Calculé dans votre navigateur</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bloc" id="usages">
+    <div class="conteneur">
+      <h2>Trois façons de l'utiliser</h2>
+      <p class="chapeau">Le même code partout, sans aucune dépendance. Les calculs se font sur place : pas de clé, pas de quota, et la version navigateur marche hors ligne.</p>
+      <div class="trois">
+        <div class="carte">
+          <span class="etiquette">Node</span>
+          <h3>Dans votre programme</h3>
+          <p>Un module à importer, une fonction à appeler.</p>
+<pre class="code"><span class="k">const</span> API = require(<span class="s">'zmanim-api'</span>);
+<span class="k">const</span> r = API.horaires({
+  lieu: <span class="s">'Strasbourg'</span>,
+  jours: <span class="n">7</span>,
+  minhag: <span class="s">'standard'</span>
+});
+r.jours[<span class="n">0</span>].zmanim.shqia <span class="c">// "HH:MM"</span></pre>
+        </div>
+        <div class="carte">
+          <span class="etiquette">Navigateur</span>
+          <h3>Dans une page web</h3>
+          <p>Un seul script de 80 ko, sans serveur ni connexion.</p>
+<pre class="code">&lt;script src=<span class="s">"zmanim-api.js"</span>&gt;&lt;/script&gt;
+&lt;script&gt;
+<span class="k">const</span> j = ZmanimAPI.horaires({
+  lieu: <span class="s">'Jerusalem'</span>, langue: <span class="s">'he'</span>
+}).jours[<span class="n">0</span>];
+&lt;/script&gt;</pre>
+        </div>
+        <div class="carte">
+          <span class="etiquette">HTTP</span>
+          <h3>Depuis n'importe quel langage</h3>
+          <p><code>npm start</code> lance l'API et ce site. Réponses JSON, CORS ouvert.</p>
+<pre class="code"><span class="c"># GET : options en paramètres</span>
+curl <span class="s">'localhost:3000/horaires?lieu=Lyon&amp;format=iso'</span>
+
+<span class="c"># POST : offices et zmanim ajoutés</span>
+curl -d <span class="s">'{"lieu":"Lyon","offices":[…]}'</span> \
+  localhost:3000/horaires</pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bloc" id="avis">
+    <div class="conteneur">
+      <h2>Réglable avis par avis</h2>
+      <p class="chapeau">Partez d'un minhag, puis remplacez ce que votre communauté fait autrement. La réponse rappelle toujours les avis appliqués.</p>
+      <div class="avis-grille">
+        <div class="minhagim" id="minhagim"></div>
+        <div class="carte" style="padding: 8px 8px 4px">
+          <table class="codes">
+            <thead><tr><th>Code</th><th>Sens</th></tr></thead>
+            <tbody>
+              <tr><td>16.1</td><td>Soleil à 16,1° sous l'horizon. N'importe quel angle : <code>18</code>, <code>12.5</code>…</td></tr>
+              <tr><td>72p</td><td>72 minutes proportionnelles (heure GR"A divisée par 60) avant le netz ou après la shqi'a.</td></tr>
+              <tr><td>45f</td><td>45 minutes fixes, quelle que soit la saison.</td></tr>
+              <tr><td>ajouts</td><td>Vos propres zmanim : décalage depuis un zman, ou angle du soleil, avec arrondi aux 5 ou 10 minutes.</td></tr>
+              <tr><td>offices</td><td>Heure fixe, ou relative à un zman (« Min'ha 15 min avant la shqi'a, arrondie aux 5 min »).</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bloc" id="essayer">
+    <div class="conteneur">
+      <h2>Essayer en direct</h2>
+      <p class="chapeau">Tout est calculé dans votre navigateur par l'API elle-même. Copiez ensuite l'appel correspondant dans l'onglet Code.</p>
+      <div class="bac">
+        <form class="carte reglages" id="form" autocomplete="off" onsubmit="return false">
+          <fieldset>
+            <legend>Lieu et dates</legend>
+            <div class="champ"><label for="f-lieu">Ville ou « lat,lon »</label><input id="f-lieu" name="lieu" list="villes" value="Paris"><datalist id="villes"></datalist></div>
+            <div class="deux">
+              <div class="champ"><label for="f-date">Date</label><input id="f-date" name="date" type="date"></div>
+              <div class="champ"><label for="f-jours">Jours</label><input id="f-jours" name="jours" type="number" min="1" max="366" value="7"></div>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>Avis</legend>
+            <div class="champ"><label for="f-minhag">Minhag</label><select id="f-minhag" name="minhag"></select></div>
+            <div id="f-avis"></div>
+            <p class="aide">Dans chaque case : un code de la liste, ou un avis libre (<code>18</code>, <code>120p</code>, <code>45f</code>).</p>
+          </fieldset>
+          <fieldset>
+            <legend>Présentation</legend>
+            <div class="deux">
+              <div class="champ"><label for="f-format">Format</label><select id="f-format" name="format"><option value="hhmm">07:56</option><option value="iso">ISO 8601</option><option value="ms">millisecondes</option></select></div>
+              <div class="champ"><label for="f-langue">Langue</label><select id="f-langue" name="langue"><option value="fr">Français</option><option value="en">English</option><option value="he">עברית</option></select></div>
+            </div>
+            <div class="champ"><span class="lib">Zmanim</span><div class="coches" id="f-zmanim"></div></div>
+            <div class="coches"><label><input type="checkbox" id="f-tefila"> Tefila du jour</label><label><input type="checkbox" id="f-israel"> Calendrier d'Israël</label></div>
+          </fieldset>
+          <details class="avance">
+            <summary>Zmanim ajoutés et offices</summary>
+            <div class="champ"><label for="f-ajouts">ajouts (JSON)</label><textarea id="f-ajouts" spellcheck="false">{
+  "korbanot": { "ref": "netz", "proportionnelles": -90 },
+  "minhaTot": { "ref": "shqia", "minutes": -20, "arrondi": "bas5" }
+}</textarea></div>
+            <div class="champ" style="margin-top:10px"><label for="f-offices">offices (JSON)</label><textarea id="f-offices" spellcheck="false">[
+  { "nom": "Cha'harit", "jours": [0,1,2,3,4,5], "heure": "07:00" },
+  { "nom": "Cha'harit", "jours": [6], "heure": "09:00" },
+  { "nom": "Min'ha", "ref": "shqia", "decalage": -15, "arrondi": "bas5" }
+]</textarea></div>
+          </details>
+        </form>
+        <div class="carte resultat">
+          <div class="onglets" role="tablist">
+            <button role="tab" aria-selected="true" aria-controls="p-tableau" id="o-tableau">Tableau</button>
+            <button role="tab" aria-selected="false" aria-controls="p-json" id="o-json">JSON</button>
+            <button role="tab" aria-selected="false" aria-controls="p-code" id="o-code">Code</button>
+          </div>
+          <div class="panneau" role="tabpanel" id="p-tableau" aria-labelledby="o-tableau"></div>
+          <div class="panneau" role="tabpanel" id="p-json" aria-labelledby="o-json" hidden></div>
+          <div class="panneau" role="tabpanel" id="p-code" aria-labelledby="o-code" hidden></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bloc" id="fiabilite">
+    <div class="conteneur">
+      <h2>Vérifié, pas seulement calculé</h2>
+      <p class="chapeau">Le moteur est celui de l'écran de synagogue de Charenton-le-Pont. Chaque version est comparée aux références publiées.</p>
+      <div class="chiffres">
+        <div class="carte chiffre"><b>1 406 / 1 406</b><span>zmanim identiques à calj.net, sur 8 villes de Jérusalem à Montréal</span></div>
+        <div class="carte chiffre"><b>1900 – 2240</b><span>chaque jour du calendrier hébraïque comparé au calendrier des navigateurs</span></div>
+        <div class="carte chiffre"><b>316</b><span>parachiot du samedi identiques à hebcal en diaspora, et 6 années en Israël</span></div>
+        <div class="carte chiffre"><b>0</b><span>dépendance : du JavaScript seul, de Node 18 aux vieilles box TV</span></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="pied-page">
+  <div class="conteneur">
+    <span>Zmanim API · les avis restent à valider avec votre rabbin.</span>
+    <span><a href="docs.html">Documentation</a> · <a href="reference.html">Référence OpenAPI</a> · <a href="openapi.json">openapi.json</a></span>
+  </div>
+</footer>
+
+<script src="zmanim-api.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

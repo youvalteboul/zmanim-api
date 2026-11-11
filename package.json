@@ -1,0 +1,15 @@
+{
+  "name": "zmanim-api",
+  "version": "1.0.0",
+  "description": "API des horaires juifs : zmanim réglables avis par avis (règles CalJ, Or Méïr), calendrier hébraïque, fêtes, paracha, tefila et offices, en JSON. Node, navigateur ou HTTP, sans dépendance.",
+  "main": "src/api.js",
+  "files": ["src", "dist", "docs"],
+  "scripts": {
+    "build": "node build.js",
+    "start": "node build.js && node src/serveur.js",
+    "test": "node build.js && node tests/test_engine.js && node tests/test_calj_villes.js && node tests/test_israel.js && node tests/test_tefila.js && node tests/test_azkarot.js && node tests/test_api.js"
+  },
+  "engines": { "node": ">=18" },
+  "license": "UNLICENSED",
+  "private": true
+}

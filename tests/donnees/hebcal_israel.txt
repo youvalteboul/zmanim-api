@@ -1,0 +1,317 @@
+# hebcal.com/sedrot/<année>?i=on (Israël), relevé le 19/10/2026. Noms anglais de hebcal ; les fêtes sont marquées FETE.
+2018-09-15|Vayeilech
+2018-09-22|Ha'azinu
+2018-09-29|FETE
+2018-10-06|Bereshit
+2018-10-13|Noach
+2018-10-20|Lech-Lecha
+2018-10-27|Vayera
+2018-11-03|Chayei Sara
+2018-11-10|Toldot
+2018-11-17|Vayetzei
+2018-11-24|Vayishlach
+2018-12-01|Vayeshev
+2018-12-08|Miketz
+2018-12-15|Vayigash
+2018-12-22|Vayechi
+2018-12-29|Shemot
+2019-01-05|Vaera
+2019-01-12|Bo
+2019-01-19|Beshalach
+2019-01-26|Yitro
+2019-02-02|Mishpatim
+2019-02-09|Terumah
+2019-02-16|Tetzaveh
+2019-02-23|Ki Tisa
+2019-03-02|Vayakhel
+2019-03-09|Pekudei
+2019-03-16|Vayikra
+2019-03-23|Tzav
+2019-03-30|Shmini
+2019-04-06|Tazria
+2019-04-13|Metzora
+2019-04-20|FETE
+2019-04-27|Achrei Mot
+2019-05-04|Kedoshim
+2019-05-11|Emor
+2019-05-18|Behar
+2019-05-25|Bechukotai
+2019-06-01|Bamidbar
+2019-06-08|Nasso
+2019-06-15|Beha'alotcha
+2019-06-22|Sh'lach
+2019-06-29|Korach
+2019-07-06|Chukat
+2019-07-13|Balak
+2019-07-20|Pinchas
+2019-07-27|Matot
+2019-08-03|Masei
+2019-08-10|Devarim
+2019-08-17|Vaetchanan
+2019-08-24|Eikev
+2019-08-31|Re'eh
+2019-09-07|Shoftim
+2019-09-14|Ki Teitzei
+2019-09-21|Ki Tavo
+2019-09-28|Nitzavim
+2025-09-27|Vayeilech
+2025-10-04|Ha'azinu
+2025-10-11|FETE
+2025-10-18|Bereshit
+2025-10-25|Noach
+2025-11-01|Lech-Lecha
+2025-11-08|Vayera
+2025-11-15|Chayei Sara
+2025-11-22|Toldot
+2025-11-29|Vayetzei
+2025-12-06|Vayishlach
+2025-12-13|Vayeshev
+2025-12-20|Miketz
+2025-12-27|Vayigash
+2026-01-03|Vayechi
+2026-01-10|Shemot
+2026-01-17|Vaera
+2026-01-24|Bo
+2026-01-31|Beshalach
+2026-02-07|Yitro
+2026-02-14|Mishpatim
+2026-02-21|Terumah
+2026-02-28|Tetzaveh
+2026-03-07|Ki Tisa
+2026-03-14|Vayakhel-Pekudei
+2026-03-21|Vayikra
+2026-03-28|Tzav
+2026-04-04|FETE
+2026-04-11|Shmini
+2026-04-18|Tazria-Metzora
+2026-04-25|Achrei Mot-Kedoshim
+2026-05-02|Emor
+2026-05-09|Behar-Bechukotai
+2026-05-16|Bamidbar
+2026-05-23|Nasso
+2026-05-30|Beha'alotcha
+2026-06-06|Sh'lach
+2026-06-13|Korach
+2026-06-20|Chukat
+2026-06-27|Balak
+2026-07-04|Pinchas
+2026-07-11|Matot-Masei
+2026-07-18|Devarim
+2026-07-25|Vaetchanan
+2026-08-01|Eikev
+2026-08-08|Re'eh
+2026-08-15|Shoftim
+2026-08-22|Ki Teitzei
+2026-08-29|Ki Tavo
+2026-09-05|Nitzavim-Vayeilech
+2026-09-12|FETE
+2026-09-19|Ha'azinu
+2026-09-26|FETE
+2026-10-03|FETE
+2026-10-10|Bereshit
+2026-10-17|Noach
+2026-10-24|Lech-Lecha
+2026-10-31|Vayera
+2026-11-07|Chayei Sara
+2026-11-14|Toldot
+2026-11-21|Vayetzei
+2026-11-28|Vayishlach
+2026-12-05|Vayeshev
+2026-12-12|Miketz
+2026-12-19|Vayigash
+2026-12-26|Vayechi
+2027-01-02|Shemot
+2027-01-09|Vaera
+2027-01-16|Bo
+2027-01-23|Beshalach
+2027-01-30|Yitro
+2027-02-06|Mishpatim
+2027-02-13|Terumah
+2027-02-20|Tetzaveh
+2027-02-27|Ki Tisa
+2027-03-06|Vayakhel
+2027-03-13|Pekudei
+2027-03-20|Vayikra
+2027-03-27|Tzav
+2027-04-03|Shmini
+2027-04-10|Tazria
+2027-04-17|Metzora
+2027-04-24|FETE
+2027-05-01|Achrei Mot
+2027-05-08|Kedoshim
+2027-05-15|Emor
+2027-05-22|Behar
+2027-05-29|Bechukotai
+2027-06-05|Bamidbar
+2027-06-12|Nasso
+2027-06-19|Beha'alotcha
+2027-06-26|Sh'lach
+2027-07-03|Korach
+2027-07-10|Chukat
+2027-07-17|Balak
+2027-07-24|Pinchas
+2027-07-31|Matot-Masei
+2027-08-07|Devarim
+2027-08-14|Vaetchanan
+2027-08-21|Eikev
+2027-08-28|Re'eh
+2027-09-04|Shoftim
+2027-09-11|Ki Teitzei
+2027-09-18|Ki Tavo
+2027-09-25|Nitzavim-Vayeilech
+2027-10-02|FETE
+2027-10-09|Ha'azinu
+2027-10-16|FETE
+2027-10-23|FETE
+2027-10-30|Bereshit
+2027-11-06|Noach
+2027-11-13|Lech-Lecha
+2027-11-20|Vayera
+2027-11-27|Chayei Sara
+2027-12-04|Toldot
+2027-12-11|Vayetzei
+2027-12-18|Vayishlach
+2027-12-25|Vayeshev
+2028-01-01|Miketz
+2028-01-08|Vayigash
+2028-01-15|Vayechi
+2028-01-22|Shemot
+2028-01-29|Vaera
+2028-02-05|Bo
+2028-02-12|Beshalach
+2028-02-19|Yitro
+2028-02-26|Mishpatim
+2028-03-04|Terumah
+2028-03-11|Tetzaveh
+2028-03-18|Ki Tisa
+2028-03-25|Vayakhel-Pekudei
+2028-04-01|Vayikra
+2028-04-08|Tzav
+2028-04-15|FETE
+2028-04-22|Shmini
+2028-04-29|Tazria-Metzora
+2028-05-06|Achrei Mot-Kedoshim
+2028-05-13|Emor
+2028-05-20|Behar-Bechukotai
+2028-05-27|Bamidbar
+2028-06-03|Nasso
+2028-06-10|Beha'alotcha
+2028-06-17|Sh'lach
+2028-06-24|Korach
+2028-07-01|Chukat
+2028-07-08|Balak
+2028-07-15|Pinchas
+2028-07-22|Matot-Masei
+2028-07-29|Devarim
+2028-08-05|Vaetchanan
+2028-08-12|Eikev
+2028-08-19|Re'eh
+2028-08-26|Shoftim
+2028-09-02|Ki Teitzei
+2028-09-09|Ki Tavo
+2028-09-16|Nitzavim-Vayeilech
+2028-09-23|Ha'azinu
+2028-09-30|FETE
+2028-10-07|FETE
+2028-10-14|Bereshit
+2028-10-21|Noach
+2028-10-28|Lech-Lecha
+2028-11-04|Vayera
+2028-11-11|Chayei Sara
+2028-11-18|Toldot
+2028-11-25|Vayetzei
+2028-12-02|Vayishlach
+2028-12-09|Vayeshev
+2028-12-16|Miketz
+2028-12-23|Vayigash
+2028-12-30|Vayechi
+2029-01-06|Shemot
+2029-01-13|Vaera
+2029-01-20|Bo
+2029-01-27|Beshalach
+2029-02-03|Yitro
+2029-02-10|Mishpatim
+2029-02-17|Terumah
+2029-02-24|Tetzaveh
+2029-03-03|Ki Tisa
+2029-03-10|Vayakhel-Pekudei
+2029-03-17|Vayikra
+2029-03-24|Tzav
+2029-03-31|FETE
+2029-04-07|Shmini
+2029-04-14|Tazria-Metzora
+2029-04-21|Achrei Mot-Kedoshim
+2029-04-28|Emor
+2029-05-05|Behar
+2029-05-12|Bechukotai
+2029-05-19|Bamidbar
+2029-05-26|Nasso
+2029-06-02|Beha'alotcha
+2029-06-09|Sh'lach
+2029-06-16|Korach
+2029-06-23|Chukat
+2029-06-30|Balak
+2029-07-07|Pinchas
+2029-07-14|Matot-Masei
+2029-07-21|Devarim
+2029-07-28|Vaetchanan
+2029-08-04|Eikev
+2029-08-11|Re'eh
+2029-08-18|Shoftim
+2029-08-25|Ki Teitzei
+2029-09-01|Ki Tavo
+2029-09-08|Nitzavim
+2029-09-15|Vayeilech
+2029-09-22|Ha'azinu
+2029-09-29|FETE
+2029-10-06|Bereshit
+2029-10-13|Noach
+2029-10-20|Lech-Lecha
+2029-10-27|Vayera
+2029-11-03|Chayei Sara
+2029-11-10|Toldot
+2029-11-17|Vayetzei
+2029-11-24|Vayishlach
+2029-12-01|Vayeshev
+2029-12-08|Miketz
+2029-12-15|Vayigash
+2029-12-22|Vayechi
+2029-12-29|Shemot
+2030-01-05|Vaera
+2030-01-12|Bo
+2030-01-19|Beshalach
+2030-01-26|Yitro
+2030-02-02|Mishpatim
+2030-02-09|Terumah
+2030-02-16|Tetzaveh
+2030-02-23|Ki Tisa
+2030-03-02|Vayakhel
+2030-03-09|Pekudei
+2030-03-16|Vayikra
+2030-03-23|Tzav
+2030-03-30|Shmini
+2030-04-06|Tazria
+2030-04-13|Metzora
+2030-04-20|FETE
+2030-04-27|Achrei Mot
+2030-05-04|Kedoshim
+2030-05-11|Emor
+2030-05-18|Behar
+2030-05-25|Bechukotai
+2030-06-01|Bamidbar
+2030-06-08|Nasso
+2030-06-15|Beha'alotcha
+2030-06-22|Sh'lach
+2030-06-29|Korach
+2030-07-06|Chukat
+2030-07-13|Balak
+2030-07-20|Pinchas
+2030-07-27|Matot-Masei
+2030-08-03|Devarim
+2030-08-10|Vaetchanan
+2030-08-17|Eikev
+2030-08-24|Re'eh
+2030-08-31|Shoftim
+2030-09-07|Ki Teitzei
+2030-09-14|Ki Tavo
+2030-09-21|Nitzavim-Vayeilech

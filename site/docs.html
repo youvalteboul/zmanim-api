@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Documentation · Zmanim API</title>
+<meta name="description" content="Toutes les options de la Zmanim API : lieu, avis, avis libres, dates, formats, zmanim ajoutés, offices, et la réponse.">
+<link rel="icon" href="icone.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Frank+Ruhl+Libre:wght@500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="style.css">
+<script src="commun.js"></script>
+</head>
+<body>
+<!-- Page construite par build.js à partir de docs/API.md : modifier docs/API.md, pas docs.html -->
+<header class="entete">
+  <div class="conteneur">
+    <a class="marque" href="./"><img src="icone.svg" alt="" width="28" height="28">Zmanim API</a>
+    <nav>
+      <a href="./#essayer">Essayer</a>
+      <a href="docs.html" aria-current="page">Documentation</a>
+      <a class="optionnel" href="reference.html">Référence</a>
+      <button class="bascule-theme" type="button" aria-label="Changer de thème">☾</button>
+    </nav>
+  </div>
+</header>
+<main class="conteneur doc-mise">
+<nav class="sommaire" aria-label="Sommaire"><p class="sommaire-titre">Sur cette page</p><ul><li><a href="#installation">Installation</a></li><li><a href="#le-plus-simple">Le plus simple</a></li><li><a href="#options">Options</a><ul><li><a href="#lieu">Lieu</a></li><li><a href="#avis-minhag">Avis (minhag)</a></li><li><a href="#dates-et-presentation">Dates et présentation</a></li><li><a href="#zmanim-ajoutes">Zmanim ajoutés</a></li><li><a href="#offices">Offices</a></li></ul></li><li><a href="#reponse">Réponse</a></li><li><a href="#exemples">Exemples</a></li></ul></nav><article class="doc"><h1 id="documentation">Documentation</h1>
+<p>Zmanim, date hébraïque, fêtes, paracha, allumage, jeûnes, tefila du jour et offices : tout passe par <strong>une seule fonction</strong>, <code>horaires(options)</code>, qui renvoie du JSON. Avec les réglages par défaut, les horaires sont identiques à ceux de calj.net (règles Or Méïr · Rav Posen, même arrondi).</p>
+<h2 id="installation">Installation</h2>
+<div class="table"><table><thead><tr><th>Où</th><th>Comment</th></tr></thead><tbody><tr><td>Node 18 ou plus</td><td><code>npm install github:&lt;compte&gt;/zmanim-api</code>, puis <code>const API = require('zmanim-api')</code>. Ou copier <code>src/</code> et <code>require('./src/api.js')</code>.</td></tr><tr><td>Navigateur</td><td><code>&lt;script src=&quot;zmanim-api.js&quot;&gt;&lt;/script&gt;</code> (le fichier <code>dist/zmanim-api.js</code>, un seul script sans dépendance), puis <code>ZmanimAPI.horaires(…)</code>. Aucune connexion nécessaire.</td></tr><tr><td>HTTP</td><td><code>npm start</code> (port 3000, ou <code>PORT=8080 npm start</code>), puis <code>GET /horaires?lieu=Paris</code>. Le même serveur sert ce site. Description OpenAPI : <code>/openapi.json</code>.</td></tr></tbody></table></div>
+<h2 id="le-plus-simple">Le plus simple</h2>
+<pre class="code" data-lang="js"><code>ZmanimAPI.horaires({ lieu: 'Paris' })            // aujourd'hui, avis Or Méïr (CalJ)
+ZmanimAPI.horaires({ lieu: 'Paris', date: '2026-11-13', jours: 7 })
+ZmanimAPI.horaires({ lieu: 'Jerusalem', minhag: 'ovadia', langue: 'he' })</code></pre>
+<pre class="code"><code>GET /horaires?lieu=Paris&amp;jours=7&amp;zmanim=netz,shqia,tzeit
+GET /horaires?lieu=Marseille&amp;minhag=ovadia&amp;tzeit=18f&amp;format=iso</code></pre>
+<h2 id="options">Options</h2>
+<p>Toutes facultatives, sauf le lieu. Une option invalide lève une erreur <code>ErreurAPI</code> (<code>e.champ</code> nomme le champ, <code>e.code === 'OPTION_INVALIDE'</code>) ; par HTTP, une réponse 400 <code>{ erreur, champ }</code>.</p>
+<h3 id="lieu">Lieu</h3>
+<div class="table"><table><thead><tr><th>Option</th><th>Valeurs</th><th>Défaut</th></tr></thead><tbody><tr><td><code>lieu</code></td><td>nom de ville (<code>'Paris'</code>, <code>'charenton'</code>, <code>'ירושלים'</code>, <code>'New York'</code> : sans accents ni majuscules, un début de nom suffit s'il n'y a pas d'ambiguïté), <code>'48.85,2.35'</code>, ou <code>{ lat, lon, tz, nom, bougies, israel }</code></td><td>—</td></tr><tr><td><code>lat</code>, <code>lon</code></td><td>degrés (remplacent ceux de la ville)</td><td></td></tr><tr><td><code>tz</code></td><td>fuseau IANA (<code>'Europe/Paris'</code>)</td><td>celui de la ville ; pour des coordonnées, celui de la ville connue la plus proche (à moins de 25 km), sinon obligatoire</td></tr><tr><td><code>bougies</code></td><td>minutes d'allumage avant la shqi'a</td><td>18 (40 à Jérusalem…)</td></tr><tr><td><code>israel</code></td><td>calendrier d'Israël (un jour de fête, paracha d'Israël)</td><td>selon le pays</td></tr><tr><td><code>joursIsrael</code></td><td>jours nationaux israéliens</td><td>comme <code>israel</code></td></tr></tbody></table></div>
+<p>La liste des villes : <code>ZmanimAPI.villes('fr')</code> ou <code>GET /villes?langue=fr</code>.</p>
+<h3 id="avis-minhag">Avis (minhag)</h3>
+<div class="table"><table><thead><tr><th>Option</th><th>Valeurs</th><th>Défaut</th></tr></thead><tbody><tr><td><code>minhag</code></td><td><code>ormeir</code> (Or Méïr · Rav Posen, CalJ), <code>ovadia</code> (Rav Ovadia Yossef), <code>standard</code> (ashkénaze, hebcal)</td><td><code>ormeir</code></td></tr><tr><td><code>alot</code></td><td>aube</td><td>selon le minhag</td></tr><tr><td><code>misheyakir</code></td><td>talit et tefilin</td><td></td></tr><tr><td><code>tzeit</code></td><td>sortie des étoiles</td><td></td></tr><tr><td><code>fin</code></td><td>fin de Shabbat et des fêtes ; en plus : <code>rt</code> (heure de Rabénou Tam), <code>min</code> (avec <code>finMinutes</code>)</td><td></td></tr><tr><td><code>finMinutes</code></td><td>minutes après la shqi'a si <code>fin=min</code></td><td>50</td></tr><tr><td><code>rt</code></td><td>nuit de Rabénou Tam</td><td></td></tr><tr><td><code>plag</code></td><td><code>gra</code>, <code>ma</code> (Maguen Avraham), <code>yy</code> (Yalkout Yossef)</td><td></td></tr></tbody></table></div>
+<p>Ces avis se donnent au premier niveau (<code>{ tzeit: '18f' }</code>, <code>?tzeit=18f</code>) ou groupés (<code>{ avis: { tzeit: '18f' } }</code>). Ils partent du minhag choisi et le remplacent avis par avis.</p>
+<p><strong>Avis libres</strong> : en plus des codes proposés dans les réglages (<code>ZmanimAPI.avis()</code> ou <code>GET /avis</code>), <code>alot</code>, <code>misheyakir</code>, <code>tzeit</code>, <code>fin</code> et <code>rt</code> acceptent n'importe quelle valeur :</p>
+<div class="table"><table><thead><tr><th>Code</th><th>Sens</th><th>Exemple</th></tr></thead><tbody><tr><td><code>18</code>, <code>12.5</code></td><td>soleil à N degrés sous l'horizon</td><td><code>alot: '18'</code></td></tr><tr><td><code>120p</code></td><td>N minutes proportionnelles (heure GR&quot;A / 60)</td><td><code>alot: '120p'</code> = 120 min proportionnelles avant le netz</td></tr><tr><td><code>45f</code></td><td>N minutes fixes</td><td><code>tzeit: '45f'</code> = 45 min après la shqi'a</td></tr></tbody></table></div>
+<p>Les minutes se comptent avant le netz pour <code>alot</code>, après l'aube choisie pour <code>misheyakir</code>, après la shqi'a pour <code>tzeit</code>, <code>fin</code> et <code>rt</code>. Le Maguen Avraham compte sa journée de l'aube choisie à la « nuit » symétrique (18° → 18°, 120p → 120p).</p>
+<p>La réponse rappelle les avis appliqués (<code>avis.methodes</code>) et le minhag reconnu (<code>avis.minhag</code>, ou <code>personnalise</code>).</p>
+<h3 id="dates-et-presentation">Dates et présentation</h3>
+<div class="table"><table><thead><tr><th>Option</th><th>Valeurs</th><th>Défaut</th></tr></thead><tbody><tr><td><code>date</code></td><td><code>'AAAA-MM-JJ'</code>, objet <code>Date</code> (lu dans le fuseau du lieu), <code>'aujourdhui'</code></td><td>aujourd'hui dans le fuseau du lieu</td></tr><tr><td><code>jours</code></td><td>nombre de jours à partir de <code>date</code> (1 à 366)</td><td>1</td></tr><tr><td><code>zmanim</code></td><td>liste ou texte séparé par des virgules, parmi <code>alot tefilin netz shemaMA shemaGRA tefilaMA tefila hatsot minhaGuedola minhaKetana plag bougies shqia tzeit finShabbat rabenouTam</code></td><td>tous</td></tr><tr><td><code>format</code></td><td><code>hhmm</code> (<code>'07:56'</code>), <code>iso</code> (<code>'2026-11-13T07:56:00+01:00'</code>), <code>ms</code> (millisecondes depuis 1970)</td><td><code>hhmm</code></td></tr><tr><td><code>arrondi</code></td><td><code>calj</code> (minute inférieure, fin de Shabbat à la minute supérieure, comme CalJ et l'écran), <code>proche</code>, <code>aucun</code> (à la seconde)</td><td><code>calj</code></td></tr><tr><td><code>langue</code></td><td><code>fr</code>, <code>en</code>, <code>he</code> (noms des jours, fêtes, paracha, événements, tefila)</td><td><code>fr</code></td></tr><tr><td><code>calendrier</code></td><td>date hébraïque, fêtes, paracha, Omer, allumage et jeûnes</td><td><code>true</code></td></tr><tr><td><code>tefila</code></td><td>ajouts de la tefila du jour (Hallel, Yaalé veyavo, Al hanissim…)</td><td><code>false</code></td></tr><tr><td><code>nusach</code></td><td><code>sefarade</code>, <code>ashkenaze</code>, <code>sfard</code> (pour la tefila)</td><td>selon le minhag</td></tr></tbody></table></div>
+<p>Un zman qui n'existe pas ce jour-là (angle jamais atteint, au nord en été) vaut <code>null</code>.</p>
+<h3 id="zmanim-ajoutes">Zmanim ajoutés</h3>
+<p><code>ajouts</code> : vos propres horaires, calculés chaque jour.</p>
+<pre class="code" data-lang="js"><code>ajouts: {
+  korbanot:   { ref: 'netz',  proportionnelles: -90 },               // 1 h ½ proportionnelle avant le netz
+  minhaTot:   { ref: 'shqia', minutes: -20, arrondi: 'bas5' },       // shqi'a − 20 min, aux 5 min inférieures
+  nuitStricte:{ angle: 12 },                                          // soleil à 12° le soir
+  aube18:     { angle: 18, moment: 'matin' }
+}</code></pre>
+<p><code>ref</code> : un des zmanim ci-dessus. <code>arrondi</code> : <code>basN</code>, <code>hautN</code> ou <code>procheN</code> (N minutes), facultatif.</p>
+<h3 id="offices">Offices</h3>
+<p><code>offices</code> : même format que les réglages de l'écran. <code>jours</code> : 0 = dimanche … 5 = vendredi <strong>ou veille de fête</strong>, 6 = Shabbat <strong>ou fête</strong> (tous les jours si absent).</p>
+<pre class="code" data-lang="js"><code>offices: [
+  { nom: &quot;Cha'harit&quot;, jours: [0, 1, 2, 3, 4, 5], heure: '07:00' },
+  { nom: &quot;Cha'harit&quot;, jours: [6], heure: '09:00' },
+  { nom: &quot;Min'ha&quot;, ref: 'shqia', decalage: -15, arrondi: 'bas5' },
+  { nom: 'Arvit', jours: [6], ref: 'finShabbat' }
+]</code></pre>
+<p>Par HTTP, <code>ajouts</code> et <code>offices</code> se passent en JSON : dans le corps d'un <code>POST /horaires</code>, ou dans le paramètre (<code>?offices=[…]</code>, encodé).</p>
+<h2 id="reponse">Réponse</h2>
+<pre class="code" data-lang="jsonc"><code>{
+  &quot;version&quot;: 1,
+  &quot;lieu&quot;: { &quot;nom&quot;: &quot;Charenton-le-Pont&quot;, &quot;lat&quot;: 48.8265, &quot;lon&quot;: 2.405, &quot;tz&quot;: &quot;Europe/Paris&quot;, &quot;israel&quot;: false, &quot;bougies&quot;: 18 },
+  &quot;avis&quot;: { &quot;minhag&quot;: &quot;ormeir&quot;, &quot;methodes&quot;: { &quot;alot&quot;: &quot;16.1&quot;, &quot;misheyakir&quot;: &quot;11&quot;, &quot;tzeit&quot;: &quot;7.08&quot;, &quot;fin&quot;: &quot;8.5&quot;, … }, &quot;nusach&quot;: &quot;sefarade&quot; },
+  &quot;reglages&quot;: { &quot;langue&quot;: &quot;fr&quot;, &quot;format&quot;: &quot;hhmm&quot;, &quot;arrondi&quot;: &quot;calj&quot; },
+  &quot;jours&quot;: [{
+    &quot;date&quot;: &quot;2026-11-13&quot;, &quot;jourSemaine&quot;: 5, &quot;nomJour&quot;: &quot;vendredi&quot;,
+    &quot;zmanim&quot;: { &quot;alot&quot;: &quot;06:18&quot;, &quot;tefilin&quot;: &quot;06:50&quot;, &quot;netz&quot;: &quot;07:56&quot;, …, &quot;finShabbat&quot;: &quot;18:04&quot;, &quot;rabenouTam&quot;: &quot;18:50&quot; },
+    &quot;ajouts&quot;: { &quot;korbanot&quot;: &quot;06:46&quot; },
+    &quot;offices&quot;: [{ &quot;nom&quot;: &quot;Cha'harit&quot;, &quot;heure&quot;: &quot;07:00&quot; }, { &quot;nom&quot;: &quot;Min'ha&quot;, &quot;heure&quot;: &quot;16:55&quot; }],
+    &quot;hebreu&quot;: { &quot;jour&quot;: 3, &quot;mois&quot;: 9, &quot;annee&quot;: 5787, &quot;nomMois&quot;: &quot;Kislev&quot;, &quot;texte&quot;: &quot;3 Kislev 5787&quot; },
+    &quot;fetes&quot;: [], &quot;shabbat&quot;: false, &quot;yomTov&quot;: false,
+    &quot;paracha&quot;: { &quot;nom&quot;: &quot;Toledot&quot;, &quot;fete&quot;: false, &quot;date&quot;: &quot;2026-11-14&quot; },
+    &quot;shabbatParticulier&quot;: [], &quot;omer&quot;: null,
+    &quot;evenements&quot;: [{ &quot;cle&quot;: &quot;bougies&quot;, &quot;nom&quot;: &quot;Allumage des bougies&quot;, &quot;heure&quot;: &quot;16:54&quot; }],
+    &quot;tefila&quot;: []   // avec tefila: true ; à Hanouka : [{ &quot;cle&quot;: &quot;tf_alHanissim&quot;, &quot;nom&quot;: &quot;Al hanissim&quot; }, …]
+  }]
+}</code></pre>
+<ul><li><code>fetes[].type</code> : <code>yomtov</code>, <code>cholhamoed</code>, <code>jeune</code>, <code>roshhodesh</code>, <code>mineur</code>, <code>national</code>.</li><li><code>paracha</code> : la lecture du Shabbat de la semaine (le jour même s'il est samedi) ; <code>fete: true</code> quand c'est la lecture d'une fête.</li><li><code>evenements[].cle</code> : <code>bougies</code>, <code>bougies2</code> (allumage du second soir, pas avant), <code>fin</code>, <code>debutJeune</code>, <code>finJeune</code>.</li><li><code>mois</code> : 1 Nissan … 7 Tishri … 12 Adar (Adar I), 13 Adar II.</li></ul>
+<h2 id="exemples">Exemples</h2>
+<p>Horaires du Shabbat d'une communauté séfarade de Marseille, en ISO pour un autre programme :</p>
+<pre class="code"><code>GET /horaires?lieu=Marseille&amp;date=2026-11-13&amp;jours=2&amp;minhag=ovadia&amp;format=iso&amp;zmanim=bougies,finShabbat,rabenouTam</code></pre>
+<p>Toute une année pour imprimer un calendrier :</p>
+<pre class="code" data-lang="js"><code>const an = API.horaires({ lieu: 'Strasbourg', date: '2027-01-01', jours: 365, zmanim: 'alot,netz,shqia,tzeit', calendrier: true });</code></pre>
+<p>Depuis une autre page web, sans serveur :</p>
+<pre class="code" data-lang="html"><code>&lt;script src=&quot;zmanim-api.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+  const j = ZmanimAPI.horaires({ lieu: { lat: 45.5017, lon: -73.5673, tz: 'America/Toronto' }, langue: 'en' }).jours[0];
+  document.querySelector('#shqia').textContent = j.zmanim.shqia;
+&lt;/script&gt;</code></pre></article>
+</main>
+<footer class="pied-page">
+  <div class="conteneur">
+    <span>Zmanim API 1.0.0</span>
+    <span><a href="reference.html">Référence OpenAPI</a> · <a href="openapi.json">openapi.json</a></span>
+  </div>
+</footer>
+</body>
+</html>

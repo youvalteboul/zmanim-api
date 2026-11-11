@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="fr" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Référence · Zmanim API</title>
+<link rel="icon" href="icone.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Frank+Ruhl+Libre:wght@500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+  /* Redoc garde son propre fond clair : la page reste claire */
+  :root { color-scheme: light; }
+  body { background: #fff; }
+  .entete { background: rgba(247, 245, 239, .92); }
+</style>
+</head>
+<body>
+<header class="entete">
+  <div class="conteneur">
+    <a class="marque" href="./"><img src="icone.svg" alt="" width="28" height="28">Zmanim API</a>
+    <nav>
+      <a href="./#essayer">Essayer</a>
+      <a href="docs.html">Documentation</a>
+      <a href="reference.html" aria-current="page">Référence</a>
+    </nav>
+  </div>
+</header>
+<div id="redoc"></div>
+<noscript><p class="conteneur">La référence interactive demande JavaScript. La description brute : <a href="openapi.json">openapi.json</a>.</p></noscript>
+<script src="https://cdn.jsdelivr.net/npm/redoc@2.1.5/bundles/redoc.standalone.js"></script>
+<script>
+  document.documentElement.dataset.theme = 'light';
+  Redoc.init('openapi.json', {
+    hideDownloadButton: false,
+    expandResponses: '200',
+    scrollYOffset: 60,
+    theme: {
+      colors: { primary: { main: '#1f4e8c' } },
+      typography: { fontFamily: 'Assistant, system-ui, sans-serif', headings: { fontFamily: '"Frank Ruhl Libre", Georgia, serif' }, code: { fontFamily: '"JetBrains Mono", monospace' } },
+      sidebar: { backgroundColor: '#f7f5ef' },
+      rightPanel: { backgroundColor: '#101a2e' }
+    }
+  }, document.getElementById('redoc'));
+</script>
+</body>
+</html>
