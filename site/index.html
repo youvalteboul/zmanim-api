@@ -8,9 +8,10 @@
 <link rel="icon" href="icone.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Frank+Ruhl+Libre:wght@500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@500;600;700;800&family=Frank+Ruhl+Libre:wght@500;700&family=JetBrains+Mono:wght@400;600&display=swap">
 <link rel="stylesheet" href="style.css">
 <script src="commun.js"></script>
+<script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }</script>
 </head>
 <body>
 <header class="entete">
@@ -27,29 +28,53 @@
 </header>
 
 <main>
-  <section class="accroche">
-    <div class="conteneur">
-      <div>
-        <span class="surtitre">בס״ד · זמנים</span>
-        <h1>Les horaires juifs, réglés <em>comme le demande votre rabbin</em>.</h1>
-        <p class="intro">Une fonction, un objet JSON : zmanim, date hébraïque, fêtes, paracha, allumage, jeûnes, tefila du jour et offices. Choisissez un minhag, puis changez chaque avis un par un, jusqu'au degré près.</p>
+  <section class="ciel" aria-labelledby="titre">
+    <div class="globe" id="globe" aria-hidden="true"></div>
+    <div class="bulle" id="bulle" hidden></div>
+    <div class="conteneur ciel-grille">
+      <div class="ciel-texte">
+        <span class="surtitre"><span class="pastille-live"></span>En direct · le Soleil est là où il est</span>
+        <h1 id="titre">Chaque zman, <em>partout sur Terre</em>, réglé comme le demande votre rabbin.</h1>
+        <p class="intro">Une fonction, un objet JSON : zmanim, date hébraïque, fêtes, paracha, allumage, jeûnes, tefila du jour et offices. Choisissez un minhag, puis changez chaque avis, jusqu'au degré près.</p>
         <div class="actions">
           <a class="bouton principal" href="#essayer">Essayer en direct</a>
-          <a class="bouton secondaire" href="docs.html">Lire la documentation</a>
+          <a class="bouton secondaire" href="docs.html">Documentation</a>
         </div>
-        <p class="installe">GET /horaires?lieu=Paris&amp;minhag=ovadia&amp;tzeit=18f</p>
+        <div class="legende" aria-label="Légende du globe">
+          <span><i class="l-jour"></i>Jour</span>
+          <span><i class="l-or"></i>Shqi'a et netz</span>
+          <span><i class="l-tirets"></i>Aube · nuit (16,1°)</span>
+          <span><i class="l-nuit"></i>Nuit</span>
+        </div>
       </div>
-      <div class="carte carte-jour" id="jour" aria-live="polite">
-        <div class="tete"><span class="lieu" id="jour-lieu">Paris</span><span class="heb" id="jour-heb"></span></div>
-        <div class="date" id="jour-date"></div>
-        <svg class="arc" id="arc" viewBox="0 0 520 214" role="img" aria-label="Course du soleil et zmanim du jour"></svg>
-        <div class="grille-zmanim" id="jour-zmanim"></div>
-        <div class="pied"><span id="jour-paracha"></span><span>Calculé dans votre navigateur</span></div>
+      <aside class="ville verre" id="ville" aria-live="polite" aria-label="Zmanim de la ville choisie">
+        <div class="ville-tete">
+          <div><p class="ville-nom" id="v-nom">—</p><p class="ville-sous" id="v-sous"></p></div>
+          <div class="ville-heure"><span id="v-heure">--:--</span><span class="ville-heb" id="v-heb"></span></div>
+        </div>
+        <div class="prochain">
+          <span class="prochain-lib" id="v-prochain-lib">Prochain zman</span>
+          <span class="prochain-val"><b id="v-prochain">—</b><span id="v-dans"></span></span>
+        </div>
+        <div class="frise" id="v-frise" role="img" aria-label="La journée, de l'aube à la nuit"></div>
+        <dl class="ville-zmanim" id="v-zmanim"></dl>
+        <div class="ville-pied">
+          <code id="v-code">GET /horaires?lieu=Paris</code>
+          <a href="#essayer" id="v-essayer">Essayer →</a>
+        </div>
+      </aside>
+    </div>
+    <div class="conteneur ciel-bas">
+      <div class="temps" role="group" aria-label="Temps du globe">
+        <button type="button" id="t-direct" aria-pressed="true">Maintenant</button>
+        <button type="button" id="t-rapide" aria-pressed="false">▶ 24 h en 30 s</button>
+        <span id="t-utc" class="t-utc"></span>
       </div>
+      <div class="monde" id="monde" aria-live="off"></div>
     </div>
   </section>
 
-  <section class="bloc" id="usages">
+  <section class="bloc apparait" id="usages">
     <div class="conteneur">
       <h2>Trois façons de l'utiliser</h2>
       <p class="chapeau">Le même code partout, sans aucune dépendance. Les calculs se font sur place : pas de clé, pas de quota, et la version navigateur marche hors ligne.</p>
@@ -92,7 +117,7 @@ curl -d <span class="s">'{"lieu":"Lyon","offices":[…]}'</span> \
     </div>
   </section>
 
-  <section class="bloc" id="avis">
+  <section class="bloc apparait" id="avis">
     <div class="conteneur">
       <h2>Réglable avis par avis</h2>
       <p class="chapeau">Partez d'un minhag, puis remplacez ce que votre communauté fait autrement. La réponse rappelle toujours les avis appliqués.</p>
@@ -114,63 +139,50 @@ curl -d <span class="s">'{"lieu":"Lyon","offices":[…]}'</span> \
     </div>
   </section>
 
-  <section class="bloc" id="essayer">
+  <section class="bloc apparait" id="essayer">
     <div class="conteneur">
-      <h2>Essayer en direct</h2>
-      <p class="chapeau">Tout est calculé dans votre navigateur par l'API elle-même. Copiez ensuite l'appel correspondant dans l'onglet Code.</p>
-      <div class="bac">
-        <form class="carte reglages" id="form" autocomplete="off" onsubmit="return false">
-          <fieldset>
-            <legend>Lieu et dates</legend>
-            <div class="champ"><label for="f-lieu">Ville ou « lat,lon »</label><input id="f-lieu" name="lieu" list="villes" value="Paris"><datalist id="villes"></datalist></div>
-            <div class="deux">
-              <div class="champ"><label for="f-date">Date</label><input id="f-date" name="date" type="date"></div>
-              <div class="champ"><label for="f-jours">Jours</label><input id="f-jours" name="jours" type="number" min="1" max="366" value="7"></div>
-            </div>
-          </fieldset>
-          <fieldset>
-            <legend>Avis</legend>
-            <div class="champ"><label for="f-minhag">Minhag</label><select id="f-minhag" name="minhag"></select></div>
-            <div id="f-avis"></div>
-            <p class="aide">Dans chaque case : un code de la liste, ou un avis libre (<code>18</code>, <code>120p</code>, <code>45f</code>).</p>
-          </fieldset>
-          <fieldset>
-            <legend>Présentation</legend>
-            <div class="deux">
-              <div class="champ"><label for="f-format">Format</label><select id="f-format" name="format"><option value="hhmm">07:56</option><option value="iso">ISO 8601</option><option value="ms">millisecondes</option></select></div>
-              <div class="champ"><label for="f-langue">Langue</label><select id="f-langue" name="langue"><option value="fr">Français</option><option value="en">English</option><option value="he">עברית</option></select></div>
-            </div>
-            <div class="champ"><span class="lib">Zmanim</span><div class="coches" id="f-zmanim"></div></div>
-            <div class="coches"><label><input type="checkbox" id="f-tefila"> Tefila du jour</label><label><input type="checkbox" id="f-israel"> Calendrier d'Israël</label></div>
-          </fieldset>
-          <details class="avance">
-            <summary>Zmanim ajoutés et offices</summary>
-            <div class="champ"><label for="f-ajouts">ajouts (JSON)</label><textarea id="f-ajouts" spellcheck="false">{
-  "korbanot": { "ref": "netz", "proportionnelles": -90 },
-  "minhaTot": { "ref": "shqia", "minutes": -20, "arrondi": "bas5" }
-}</textarea></div>
-            <div class="champ" style="margin-top:10px"><label for="f-offices">offices (JSON)</label><textarea id="f-offices" spellcheck="false">[
-  { "nom": "Cha'harit", "jours": [0,1,2,3,4,5], "heure": "07:00" },
-  { "nom": "Cha'harit", "jours": [6], "heure": "09:00" },
-  { "nom": "Min'ha", "ref": "shqia", "decalage": -15, "arrondi": "bas5" }
-]</textarea></div>
-          </details>
-        </form>
-        <div class="carte resultat">
-          <div class="onglets" role="tablist">
-            <button role="tab" aria-selected="true" aria-controls="p-tableau" id="o-tableau">Tableau</button>
-            <button role="tab" aria-selected="false" aria-controls="p-json" id="o-json">JSON</button>
-            <button role="tab" aria-selected="false" aria-controls="p-code" id="o-code">Code</button>
-          </div>
-          <div class="panneau" role="tabpanel" id="p-tableau" aria-labelledby="o-tableau"></div>
-          <div class="panneau" role="tabpanel" id="p-json" aria-labelledby="o-json" hidden></div>
-          <div class="panneau" role="tabpanel" id="p-code" aria-labelledby="o-code" hidden></div>
+      <h2>Jouez avec les avis</h2>
+      <p class="chapeau">Choisissez un scénario, tournez les boutons, regardez les horaires bouger. Tout est calculé ici, dans votre navigateur, par l'API elle-même.</p>
+      <div class="scenarios" id="scenarios" role="group" aria-label="Scénarios"></div>
+      <div class="carte banc">
+        <div class="banc-haut">
+          <div class="champ champ-lieu"><label for="f-lieu">Où</label><input id="f-lieu" list="villes" value="Paris" autocomplete="off"><datalist id="villes"></datalist></div>
+          <div class="champ"><label for="f-date">À partir du</label><input id="f-date" type="date"></div>
+          <div class="champ"><span class="lib" id="l-jours">Jours</span><div class="segments" id="f-jours" role="radiogroup" aria-labelledby="l-jours"></div></div>
+          <div class="champ"><span class="lib" id="l-minhag">Minhag</span><div class="segments" id="f-minhag" role="radiogroup" aria-labelledby="l-minhag"></div></div>
+          <div class="champ"><label for="f-comparer">Comparer avec</label><select id="f-comparer"><option value="">personne</option></select></div>
         </div>
+        <div class="boutons" id="f-avis" role="group" aria-label="Avis"></div>
+        <div class="banc-options">
+          <div class="coches" id="f-zmanim" role="group" aria-label="Zmanim affichés"></div>
+          <div class="options-droite">
+            <div class="segments petit" id="f-langue" role="radiogroup" aria-label="Langue"></div>
+            <div class="segments petit" id="f-format" role="radiogroup" aria-label="Format des heures"></div>
+            <label class="interrupteur"><input type="checkbox" id="f-tefila"><span></span>Tefila</label>
+            <label class="interrupteur"><input type="checkbox" id="f-israel"><span></span>Israël</label>
+          </div>
+        </div>
+        <details class="avance">
+          <summary>Zmanim ajoutés et offices (JSON)</summary>
+          <div class="deux-json">
+            <div class="champ"><label for="f-ajouts">ajouts</label><textarea id="f-ajouts" spellcheck="false"></textarea></div>
+            <div class="champ"><label for="f-offices">offices</label><textarea id="f-offices" spellcheck="false"></textarea></div>
+          </div>
+        </details>
+        <div class="onglets" role="tablist">
+          <button role="tab" aria-selected="true" aria-controls="p-tableau" id="o-tableau">Tableau</button>
+          <button role="tab" aria-selected="false" aria-controls="p-json" id="o-json">JSON</button>
+          <button role="tab" aria-selected="false" aria-controls="p-code" id="o-code">Code</button>
+          <span class="resume" id="resume"></span>
+        </div>
+        <div class="panneau" role="tabpanel" id="p-tableau" aria-labelledby="o-tableau"></div>
+        <div class="panneau" role="tabpanel" id="p-json" aria-labelledby="o-json" hidden></div>
+        <div class="panneau" role="tabpanel" id="p-code" aria-labelledby="o-code" hidden></div>
       </div>
     </div>
   </section>
 
-  <section class="bloc" id="fiabilite">
+  <section class="bloc apparait" id="fiabilite">
     <div class="conteneur">
       <h2>Vérifié, pas seulement calculé</h2>
       <p class="chapeau">Le moteur est celui de l'écran de synagogue de Charenton-le-Pont. Chaque version est comparée aux références publiées.</p>
@@ -193,5 +205,6 @@ curl -d <span class="s">'{"lieu":"Lyon","offices":[…]}'</span> \
 
 <script src="zmanim-api.js"></script>
 <script src="app.js"></script>
+<script type="module" src="ciel.js"></script>
 </body>
 </html>

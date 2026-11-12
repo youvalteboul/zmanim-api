@@ -25,7 +25,7 @@ Node 18 ou plus. Aucune dépendance à installer.
 
 ## Le site
 
-`site/` est le site de présentation : accueil avec un bac à sable qui calcule en direct dans le navigateur, documentation (construite depuis [docs/API.md](docs/API.md)) et référence OpenAPI. Il est entièrement statique : `npm start` le sert avec l'API, et il peut aussi être publié tel quel (GitHub Pages, Netlify…) puisque le bac à sable n'a pas besoin du serveur.
+`site/` est le site de présentation : accueil avec un globe 3D en temps réel (Three.js : le Soleil à sa vraie position, la bande dorée de la shqi'a à 16,1°, les villes cliquables avec leurs zmanim, une journée en 30 secondes), un bac à sable qui calcule en direct dans le navigateur, documentation (construite depuis [docs/API.md](docs/API.md)) et référence OpenAPI. Il est entièrement statique : `npm start` le sert avec l'API, et il peut aussi être publié tel quel (GitHub Pages, Netlify…) puisque le bac à sable n'a pas besoin du serveur.
 
 ## Organisation
 
