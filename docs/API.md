@@ -6,7 +6,7 @@ Zmanim, date hébraïque, fêtes, paracha, allumage, jeûnes, tefila du jour et 
 
 | Où | Comment |
 |---|---|
-| Node 18 ou plus | `npm install github:<compte>/zmanim-api`, puis `const API = require('zmanim-api')`. Ou copier `src/` et `require('./src/api.js')`. |
+| Node 18 ou plus | `npm install github:youvalteboul/zmanim-api`, puis `const API = require('zmanim-api')`. Ou copier `src/` et `require('./src/api.js')`. |
 | Navigateur | `<script src="zmanim-api.js"></script>` (le fichier `dist/zmanim-api.js`, un seul script sans dépendance), puis `ZmanimAPI.horaires(…)`. Aucune connexion nécessaire. |
 | HTTP | `npm start` (port 3000, ou `PORT=8080 npm start`), puis `GET /horaires?lieu=Paris`. Le même serveur sert ce site. Description OpenAPI : `/openapi.json`. |
 

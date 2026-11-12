@@ -10,6 +10,6 @@
     "test": "node build.js && node tests/test_engine.js && node tests/test_calj_villes.js && node tests/test_israel.js && node tests/test_tefila.js && node tests/test_azkarot.js && node tests/test_api.js"
   },
   "engines": { "node": ">=18" },
-  "license": "UNLICENSED",
+  "license": "AGPL-3.0-or-later",
   "private": true
 }
